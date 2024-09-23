@@ -1,11 +1,13 @@
 import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, useIonViewWillEnter, IonList, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonButton, useIonAlert } from '@ionic/react'
 import React, { useEffect, useState } from 'react'
 import { Product } from './models/products.model';
+// import storage from '../../storage';
 
 export const ProductPage = () => {
 
-    const [presentAlert] = useIonAlert();
+  const [presentAlert] = useIonAlert();
   const [products, setProducts] = useState<Product[]>([]);  
+  const [product, setProduct] = useState({});  
 
   useEffect(() => {
     const getProducts  = async () => {
@@ -41,8 +43,23 @@ export const ProductPage = () => {
     
   }, []);
 
-  const updateDesired = (e, product) => {
+//   useEffect(() => {
+//     const saveData = async () => {
+//       await storage.set('myKey', { name: 'Ionic', version: '5' });
+//     };
+
+//     const loadData = async () => {
+//       const data = await storage.get('myKey');
+//       console.log('Datos cargados:', data);
+//     };
+
+//     saveData();
+//     loadData();
+//   }, [product]);
+
+  const updateDesired = (e: any, product: Product) => {
    console.log(product);
+   setProduct(product);
   };
 
   return (
