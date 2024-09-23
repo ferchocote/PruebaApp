@@ -1,8 +1,9 @@
 import { Redirect, Route } from 'react-router-dom';
 import { IonApp, IonRouterOutlet, setupIonicReact } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { Storage } from '@ionic/storage';
+
 import { useEffect } from 'react';
+import  storage  from "./storage";
 
 import Home from './pages/Home';
 
@@ -38,10 +39,7 @@ import './theme/variables.css';
 
 setupIonicReact();
 
-const storage = new Storage({
-  name: '__mydb',
-  driverOrder: ['sqlite', 'indexeddb', 'websql', 'localstorage']
-});
+
 
 const App: React.FC = () => {
 

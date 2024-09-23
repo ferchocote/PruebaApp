@@ -1,23 +1,109 @@
-import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent } from '@ionic/react'
-import React from 'react'
-import ExploreContainer from '../../components/ExploreContainer'
+import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonButton, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonList, useIonAlert } from '@ionic/react'
+import React, { useEffect, useState } from 'react'
+import storage from '../../storage';
+import { Product } from '../Product/models/products.model';
 
 export const DesiredProductPage = () => {
-  return (
-    <IonPage>
-      <IonHeader>
-        <IonToolbar>
-          <IonTitle>Productos Deseados</IonTitle>
-        </IonToolbar>
-      </IonHeader>
-      <IonContent fullscreen>
-        <IonHeader collapse="condense">
+    const [presentAlert] = useIonAlert();
+    const [products, setProducts] = useState<Product[]>([]);  
+    const [product, setProduct] = useState({});  
+  
+    useEffect(() => {
+      getProducts();
+      
+    }, []);
+  
+    useEffect(() => {
+      const loadData = async () => {
+        const data = await storage.get('productKey');
+        console.log('Datos cargados:', data);
+      };
+  
+      const saveData = async () => {
+          await storage.set('productKey', product);
+        };
+  
+      saveData();
+      loadData();
+    }, [product]);
+
+
+    const getProducts  = async () => {
+        try{
+          let data: Product[] = [];
+
+            const loadData = async () => {
+              data = await storage.get('productKey');
+              console.log('Datos cargados:', data);
+              setProducts(data);
+              console.log('Datos cargados:', data);
+            };
+            loadData();
+            
+        } catch(error: unknown){
+            if (error instanceof Error) {
+                console.log(error.message); // Accede a la propiedad message
+                presentAlert({
+                  header: 'Alert',
+                  subHeader: 'Error al obtener los productos',
+                  message: `Este es un error: ${error.message}`,
+                  buttons: ['OK'],
+                });
+              } else {
+                // Si no es un Error, maneja el caso desconocido
+                console.log('Error desconocido:', error);
+                presentAlert({
+                  header: 'Alert',
+                  subHeader: 'Error desconocido',
+                  message: 'Ha ocurrido un error inesperado.',
+                  buttons: ['OK'],
+                });
+              }
+           
+        }
+    }
+  
+    const updateDesired = (e: any, product: Product) => {
+     console.log(product);
+     setProduct(product);
+    };
+  
+    return (
+      <IonPage>
+        <IonHeader>
           <IonToolbar>
-            <IonTitle size="large">Blank</IonTitle>
+            <IonTitle>Productos</IonTitle>
           </IonToolbar>
         </IonHeader>
-        <ExploreContainer />
-      </IonContent>
-    </IonPage>
-  )
+        <IonContent fullscreen className="ion-padding">
+          <IonHeader collapse="condense">
+            <IonToolbar>
+              <IonTitle size="large">Blank</IonTitle>
+            </IonToolbar>
+          </IonHeader>
+          <IonList>
+              {
+                  products.length > 0 ? (products.map( product => 
+                  <IonCard key={product.id}>
+                  <img alt="Silhouette of mountains" src={product.images[0]} />
+                  <IonCardHeader>
+                    <IonCardTitle>{product.title}</IonCardTitle>
+                    <IonCardSubtitle>PRICE: ${product.price}</IonCardSubtitle>
+                  </IonCardHeader>
+            
+                  <IonCardContent>{product.description}</IonCardContent>
+                  {/* <IonButton onClick={ e => updateDesired(e, product) } fill="clear">Deseado</IonButton> */}
+                </IonCard>
+              
+                  
+               ))
+               :(
+                    <p>Productos no encontrados :C....</p>
+              )
+              }
+  
+          </IonList>   
+        </IonContent>
+      </IonPage>
+    )
 }

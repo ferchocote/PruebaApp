@@ -1,9 +1,9 @@
-// import { Storage } from '@ionic/storage';
+import { Drivers, Storage } from '@ionic/storage';
 
-// const storage = new Storage({
-//   name: '__mydb',
-//   driverOrder: ['sqlite', 'indexeddb', 'websql'],
-// });
+const storage = new Storage({
+    name: 'pruebaIonicdb',
+    driverOrder: [Drivers.IndexedDB, Drivers.LocalStorage]
+  });
 
-// export default storage;
+export default storage;
 
