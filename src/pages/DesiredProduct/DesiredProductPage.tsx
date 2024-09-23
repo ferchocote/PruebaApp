@@ -5,27 +5,12 @@ import { Product } from '../Product/models/products.model';
 
 export const DesiredProductPage = () => {
     const [presentAlert] = useIonAlert();
-    const [products, setProducts] = useState<Product[]>([]);  
-    const [product, setProduct] = useState({});  
+    const [products, setProducts] = useState<Product[]>([]); 
   
     useEffect(() => {
       getProducts();
       
-    }, []);
-  
-    useEffect(() => {
-      const loadData = async () => {
-        const data = await storage.get('productKey');
-        console.log('Datos cargados:', data);
-      };
-  
-      const saveData = async () => {
-          await storage.set('productKey', product);
-        };
-  
-      saveData();
-      loadData();
-    }, [product]);
+    });
 
 
     const getProducts  = async () => {
@@ -62,11 +47,6 @@ export const DesiredProductPage = () => {
            
         }
     }
-  
-    const updateDesired = (e: any, product: Product) => {
-     console.log(product);
-     setProduct(product);
-    };
   
     return (
       <IonPage>
