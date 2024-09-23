@@ -19,7 +19,7 @@ const Home: React.FC = () => {
           Use the component prop when your component depends on the RouterComponentProps passed in automatically.
         */}
           <Route path="/home" render={() => <ProductPage />} exact={true} />
-          <Route path="/desired" render={() => <DesiredProductPage />} exact={true} />
+          <Route path="/desired" render={() => <DesiredProductPage update={true} />} exact={true} />
         </IonRouterOutlet>
 
         <IonTabBar slot="bottom">

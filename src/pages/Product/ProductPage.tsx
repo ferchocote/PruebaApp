@@ -54,6 +54,8 @@ export const ProductPage = () => {
     };
     if (desiredProducts.length > 0) {
       saveData();
+    }else if(desiredProducts.length == 0){
+        storage.clear();
     }
   }, [desiredProducts]);
 

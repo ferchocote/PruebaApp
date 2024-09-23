@@ -3,14 +3,14 @@ import React, { useEffect, useState } from 'react'
 import storage from '../../storage';
 import { Product } from '../Product/models/products.model';
 
-export const DesiredProductPage = () => {
+export const DesiredProductPage = (update: boolean) => {
     const [presentAlert] = useIonAlert();
     const [products, setProducts] = useState<Product[]>([]); 
   
     useEffect(() => {
       getProducts();
       
-    });
+    }, []);
 
 
     const getProducts  = async () => {
@@ -20,7 +20,12 @@ export const DesiredProductPage = () => {
             const loadData = async () => {
               data = await storage.get('productKey');
               console.log('Datos cargados:', data);
-              setProducts(data);
+              if(data != null && data.length >= 1){
+                setProducts(data);
+              }else{
+                setProducts([]);
+              }
+                 
               console.log('Datos cargados:', data);
             };
             loadData();
@@ -47,6 +52,11 @@ export const DesiredProductPage = () => {
            
         }
     }
+
+    useEffect(() => {
+        getProducts();
+        
+      }, [update]);
   
     return (
       <IonPage>
